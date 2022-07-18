@@ -1,6 +1,5 @@
 * {
   box-sizing: border-box;
-  font-family: monospace;
 }
 
 body {
@@ -14,6 +13,7 @@ body {
   color: #004E89;
   font-size: 30px;
   font-weight: 400;
+  font-family: monospace;
 }
 
 .banner h2 {
@@ -23,6 +23,7 @@ body {
   letter-spacing: 2px;
   text-align: center;
   text-transform: uppercase;
+  font-family: monospace;
 }
 
 .banner p {
@@ -30,6 +31,7 @@ body {
   font-size: 16px;
   font-weight: 100;
   text-align: center;
+  font-family: monospace;
 }
 
 .banner img {
