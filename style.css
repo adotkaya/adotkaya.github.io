@@ -52,3 +52,19 @@ body {
     margin : 20 auto;
     border-radius: 100%;
 }
+
+
+.links p {
+  color: #004E89;
+  font-size: 30px;
+  font-weight: 400;
+  font-family: monospace;
+}
+
+.links a {
+   color: #004E89;
+  font-size: 30px;
+  font-weight: 400;
+  font-family: monospace;
+  
+}
