@@ -45,12 +45,9 @@ body {
   font-family: monospace;
 }
 
-.links {
+.links a {
 	  float: left;
 	  width: 30%;
 	  padding: 5px;
 	}
 
-.links img {
-	  width: 100%;
-	}	
