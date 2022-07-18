@@ -45,9 +45,9 @@ body {
   font-family: monospace;
 }
 
-.links a img {
-	float: left;
-	height: 150px;
-	width: 150px;
- 	margin: 0 auto;
+#logo {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 30px; 
 	}
