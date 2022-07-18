@@ -59,6 +59,7 @@ body {
   font-size: 30px;
   font-weight: 400;
   font-family: monospace;
+  text-align: center;
 }
 
 .links a {
@@ -66,5 +67,6 @@ body {
   font-size: 30px;
   font-weight: 400;
   font-family: monospace;
+  text-align: center;
   
 }
