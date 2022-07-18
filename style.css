@@ -46,8 +46,8 @@ body {
 }
 
 .links a {
-	  float: left;
-	  width: 30%;
-	  padding: 5px;
+	float: left;
+	height: 150px;
+ 	margin: 0 auto;
+  	border-radius: 100%;
 	}
-
