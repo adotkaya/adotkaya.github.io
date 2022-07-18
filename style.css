@@ -9,13 +9,13 @@ body {
   text-align: center;
 }
 
-h1 {
+.banner h1 {
   color: #004E89;
   font-size: 30px;
   font-weight: 400;
 }
 
-h2 {
+.banner h2 {
   color: #AAA;
   font-size: 16px;
   font-weight: 100;
@@ -24,14 +24,14 @@ h2 {
   text-transform: uppercase;
 }
 
-p {
+.banner p {
   color: #333;
   font-size: 16px;
   font-weight: 100;
   text-align: center;
 }
 
-img {
+.banner img {
   height: 150px;
   margin: 0 auto;
   border-radius: 100%;
