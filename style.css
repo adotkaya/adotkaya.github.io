@@ -35,7 +35,7 @@ body {
 }
 
 .banner img {
-  height: 150px;
+  height: 200px;
   margin: 0 auto;
   border-radius: 100%;
 
@@ -47,8 +47,8 @@ body {
 
 #logo {
     display: inline-block;
-    width  : 200px;
-    height : 200x;
-    margin : 0 auto;
+    width  : 120px;
+    height : 120px;
+    margin : 20 auto;
     border-radius: 100%;
 }
