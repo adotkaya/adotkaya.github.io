@@ -1,12 +1,39 @@
-.banner {
-    background-color: plum;
-    color: white;
-    margin-top: 75px;
-    text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.dilos{
-    background-color: plum;
-    color: white; 
-    text-align: center;
+body {
+  background-color: #FFF;
+  padding: 50px 60px;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+h1 {
+  color: #004E89;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+h2 {
+  color: #AAA;
+  font-size: 16px;
+  font-weight: 100;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+p {
+  color: #333;
+  font-size: 16px;
+  font-weight: 100;
+  text-align: center;
+}
+
+img {
+  height: 150px;
+  margin: 0 auto;
+  border-radius: 100%;
+
 }
