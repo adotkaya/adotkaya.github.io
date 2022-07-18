@@ -45,7 +45,7 @@ body {
   font-family: monospace;
 }
 
-.links a {
+.links a img {
 	float: left;
 	height: 150px;
  	margin: 0 auto;
