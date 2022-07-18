@@ -40,3 +40,7 @@ body {
   border-radius: 100%;
 
 }
+
+.banner a {
+  font-family: monospace;
+}
