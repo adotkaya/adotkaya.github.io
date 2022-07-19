@@ -95,7 +95,7 @@ body {
 	text-decoration: none; 
 }
 
-#mail {
+#mail p{
   border: 1px solid #466995;
   border-radius: 10px;
   text-decoration: none;
