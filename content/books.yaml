@@ -1,17 +1,19 @@
 - title: "Designing Data-Intensive Applications"
   author: "Martin Kleppmann"
 
+- title: "Distributed Services with Go"
+  author: "Travis Jeffrey"
+
 - title: "Learning Go: An Idiomatic Approach to Real-World Go Programming"
   author: "Jon Bodner"
 
 - title: "The Pragmatic Programmer"
   author: "David Thomas, Andrew Hunt"
 
-- title: "Distributed Services with Go"
-  author: "Travis Jeffrey"
+- title: "Let's Go Further"
+  author: "Alex Edwards"
+  status: "Finished"
 
 - title: "Let's Go"
   author: "Alex Edwards"
-
-- title: "Let's Go Further"
-  author: "Alex Edwards"
+  status: "Finished"
