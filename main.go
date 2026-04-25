@@ -1,21 +1,28 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
 	"gopkg.in/yaml.v3"
 )
 
-type Site struct {
+type PageData struct {
 	Config     Config
 	Experience []Experience
 	Projects   []Project
 	Books      []Book
 	Tools      []Tool
+	Posts      []BlogPost
+	Post       *BlogPost
 	Year       int
 }
 
@@ -53,48 +60,184 @@ type Tool struct {
 	Icon string `yaml:"icon"`
 }
 
+type BlogPost struct {
+	Title   string
+	Date    string
+	Slug    string
+	Excerpt string
+	Content template.HTML
+	URL     string
+}
+
+type blogFrontmatter struct {
+	Title string `yaml:"title"`
+	Date  string `yaml:"date"`
+	Slug  string `yaml:"slug"`
+}
+
+func main() {
+	data := loadPageData()
+
+	if err := os.MkdirAll("public", 0755); err != nil {
+		log.Fatalf("Error creating public dir: %v", err)
+	}
+
+	// Home
+	renderTemplate("templates/index.html", "public/index.html", data)
+
+	// Resume
+	os.MkdirAll("public/resume", 0755)
+	renderTemplate("templates/resume.html", "public/resume/index.html", data)
+
+	// Projects
+	os.MkdirAll("public/projects", 0755)
+	renderTemplate("templates/projects.html", "public/projects/index.html", data)
+
+	// Blog list
+	os.MkdirAll("public/blog", 0755)
+	renderTemplate("templates/blog-list.html", "public/blog/index.html", data)
+
+	// Blog posts
+	for i := range data.Posts {
+		postData := data
+		postData.Post = &data.Posts[i]
+		postDir := filepath.Join("public/blog", data.Posts[i].Slug)
+		os.MkdirAll(postDir, 0755)
+		renderTemplate("templates/blog-post.html", filepath.Join(postDir, "index.html"), postData)
+	}
+
+	// Now
+	os.MkdirAll("public/now", 0755)
+	renderTemplate("templates/now.html", "public/now/index.html", data)
+
+	// Uses
+	os.MkdirAll("public/uses", 0755)
+	renderTemplate("templates/uses.html", "public/uses/index.html", data)
+
+	// Static files
+	copyStatic("static", "public")
+
+	log.Println("Site generated successfully in public/")
+}
+
+func renderTemplate(src, dst string, data PageData) {
+	tmpl, err := template.ParseFiles(src)
+	if err != nil {
+		log.Fatalf("Error parsing %s: %v", src, err)
+	}
+
+	f, err := os.Create(dst)
+	if err != nil {
+		log.Fatalf("Error creating %s: %v", dst, err)
+	}
+	defer f.Close()
+
+	if err := tmpl.Execute(f, data); err != nil {
+		log.Fatalf("Error executing %s: %v", src, err)
+	}
+}
+
+func loadPageData() PageData {
+	var data PageData
+	data.Year = time.Now().Year()
+
+	data.Config = mustParseYAML[Config](contentPath("config.yaml"))
+	data.Experience = mustParseYAML[[]Experience](contentPath("experience.yaml"))
+	data.Projects = mustParseYAML[[]Project](contentPath("projects.yaml"))
+	data.Books = mustParseYAML[[]Book](contentPath("books.yaml"))
+	data.Tools = mustParseYAML[[]Tool](contentPath("tools.yaml"))
+	data.Posts = loadBlogPosts()
+
+	return data
+}
+
+func loadBlogPosts() []BlogPost {
+	entries, err := os.ReadDir("content/blog")
+	if err != nil {
+		return nil
+	}
+
+	var posts []BlogPost
+	for _, entry := range entries {
+		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".md") {
+			continue
+		}
+
+		post := parseBlogPost(filepath.Join("content/blog", entry.Name()))
+		posts = append(posts, post)
+	}
+
+	// Sort by date descending (newest first)
+	for i := 0; i < len(posts)-1; i++ {
+		for j := i + 1; j < len(posts); j++ {
+			if posts[i].Date < posts[j].Date {
+				posts[i], posts[j] = posts[j], posts[i]
+			}
+		}
+	}
+
+	return posts
+}
+
+func parseBlogPost(path string) BlogPost {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatalf("Error reading blog post %s: %v", path, err)
+	}
+
+	content := string(data)
+
+	// Parse frontmatter
+	var fm blogFrontmatter
+	if strings.HasPrefix(content, "---") {
+		end := strings.Index(content[3:], "---")
+		if end != -1 {
+			fmData := content[3 : end+3]
+			if err := yaml.Unmarshal([]byte(fmData), &fm); err != nil {
+				log.Printf("Warning: failed to parse frontmatter in %s: %v", path, err)
+			}
+			content = strings.TrimSpace(content[end+6:])
+		}
+	}
+
+	// Convert markdown to HTML
+	md := []byte(content)
+	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
+	p := parser.NewWithExtensions(extensions)
+	doc := p.Parse(md)
+
+	htmlFlags := html.CommonFlags | html.HrefTargetBlank
+	opts := html.RendererOptions{Flags: htmlFlags}
+	renderer := html.NewRenderer(opts)
+	htmlContent := markdown.Render(doc, renderer)
+
+	// Generate excerpt (first 150 chars of plain text)
+	plain := strings.TrimSpace(content)
+	plain = strings.ReplaceAll(plain, "#", "")
+	plain = strings.ReplaceAll(plain, "*", "")
+	plain = strings.ReplaceAll(plain, "`", "")
+	excerpt := plain
+	if len(excerpt) > 150 {
+		excerpt = excerpt[:150] + "..."
+	}
+	excerpt = strings.ReplaceAll(excerpt, "\n", " ")
+
+	return BlogPost{
+		Title:   fm.Title,
+		Date:    fm.Date,
+		Slug:    fm.Slug,
+		Excerpt: excerpt,
+		Content: template.HTML(htmlContent),
+		URL:     fmt.Sprintf("/blog/%s/", fm.Slug),
+	}
+}
+
 func contentPath(filename string) string {
 	primary := filepath.Join("content", filename)
 	if _, err := os.Stat(primary); err == nil {
 		return primary
 	}
 	return filepath.Join("content-example", filename)
-}
-
-func main() {
-	var site Site
-	site.Year = time.Now().Year()
-
-	site.Config = mustParseYAML[Config](contentPath("config.yaml"))
-	site.Experience = mustParseYAML[[]Experience](contentPath("experience.yaml"))
-	site.Projects = mustParseYAML[[]Project](contentPath("projects.yaml"))
-	site.Books = mustParseYAML[[]Book](contentPath("books.yaml"))
-	site.Tools = mustParseYAML[[]Tool](contentPath("tools.yaml"))
-
-	tmpl, err := template.ParseFiles("templates/index.html")
-	if err != nil {
-		log.Fatalf("Error parsing template: %v", err)
-	}
-
-	if err := os.MkdirAll("public", 0755); err != nil {
-		log.Fatalf("Error creating public dir: %v", err)
-	}
-
-	out, err := os.Create("public/index.html")
-	if err != nil {
-		log.Fatalf("Error creating output file: %v", err)
-	}
-	defer out.Close()
-
-	if err := tmpl.Execute(out, site); err != nil {
-		log.Fatalf("Error executing template: %v", err)
-	}
-
-	if err := copyStatic("static", "public"); err != nil {
-		log.Fatalf("Error copying static files: %v", err)
-	}
-
-	log.Println("Site generated successfully in public/")
 }
 
 func mustParseYAML[T any](path string) T {
