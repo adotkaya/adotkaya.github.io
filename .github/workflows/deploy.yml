@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -29,6 +30,9 @@ jobs:
         run: |
           go mod download
           go run main.go
+
+      - name: Verify build output
+        run: ls -la public/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
