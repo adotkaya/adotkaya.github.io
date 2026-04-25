@@ -5,9 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@{{.Config.Username}}</title>
     <meta name="description" content="{{.Config.Bio}}">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" type="application/atom+xml" title="{{.Config.Name}}'s Blog" href="{{.BaseURL}}/feed.xml">
+    <link rel="canonical" href="{{.BaseURL}}/">
     <meta property="og:title" content="@{{.Config.Username}}">
     <meta property="og:description" content="{{.Config.Bio}}">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="{{.BaseURL}}/">
+    <meta property="og:image" content="{{.BaseURL}}/og-image.svg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="@{{.Config.Username}}">
+    <meta name="twitter:description" content="{{.Config.Bio}}">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "{{.Config.Name}}",
+      "url": "{{.BaseURL}}/",
+      "sameAs": [
+        "{{.Config.GitHub}}",
+        "{{.Config.LinkedIn}}"
+      ],
+      "jobTitle": "Software Developer",
+      "description": "{{.Config.Bio}}"
+    }
+    </script>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -43,7 +65,7 @@
                 {{range .Posts}}
                 <article class="post-preview">
                     <div class="post-preview-meta">
-                        <time datetime="{{.Date}}">{{.Date}}</time>
+                        <time datetime="{{.Date}}">{{.DateFormatted}}</time>
                         <span class="reading-time">{{.ReadingTime}} min read</span>
                     </div>
                     <h3><a href="{{.URL}}">{{.Title}}</a></h3>

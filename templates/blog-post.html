@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Post.Title}} — @{{.Config.Username}}</title>
     <meta name="description" content="{{.Post.Excerpt}}">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" type="application/atom+xml" title="{{.Config.Name}}'s Blog" href="{{.BaseURL}}/feed.xml">
+    <link rel="canonical" href="{{.BaseURL}}{{.Post.URL}}">
+    <meta property="og:title" content="{{.Post.Title}} — @{{.Config.Username}}">
+    <meta property="og:description" content="{{.Post.Excerpt}}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{.BaseURL}}{{.Post.URL}}">
+    <meta property="og:image" content="{{.BaseURL}}/og-image.svg">
+    <meta property="article:published_time" content="{{.Post.Date}}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{.Post.Title}} — @{{.Config.Username}}">
+    <meta name="twitter:description" content="{{.Post.Excerpt}}">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "{{.Post.Title}}",
+      "author": {
+        "@type": "Person",
+        "name": "{{.Config.Name}}"
+      },
+      "datePublished": "{{.Post.Date}}",
+      "url": "{{.BaseURL}}{{.Post.URL}}",
+      "description": "{{.Post.Excerpt}}"
+    }
+    </script>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -23,7 +49,7 @@
         <article class="blog-post">
             <header class="blog-post-header">
                 <div class="blog-post-meta">
-                    <time datetime="{{.Post.Date}}">{{.Post.Date}}</time>
+                    <time datetime="{{.Post.Date}}">{{.Post.DateFormatted}}</time>
                     <span class="reading-time">{{.Post.ReadingTime}} min read</span>
                 </div>
                 <h1>{{.Post.Title}}</h1>
@@ -32,6 +58,8 @@
                 {{.Post.Content}}
             </div>
             <footer class="blog-post-footer">
+                {{if .PrevPost}}<p><a href="{{.PrevPost.URL}}">&larr; {{.PrevPost.Title}}</a></p>{{end}}
+                {{if .NextPost}}<p><a href="{{.NextPost.URL}}">{{.NextPost.Title}} &rarr;</a></p>{{end}}
                 <a href="/blog/">&larr; All posts</a>
             </footer>
         </article>

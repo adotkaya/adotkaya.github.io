@@ -32,7 +32,10 @@ type PageData struct {
 	Tools      []Tool
 	Posts      []BlogPost
 	Post       *BlogPost
+	PrevPost   *BlogPost
+	NextPost   *BlogPost
 	Year       int
+	BaseURL    string
 }
 
 type Config struct {
@@ -121,19 +124,21 @@ type Tool struct {
 }
 
 type BlogPost struct {
-	Title       string
-	Date        string
-	Slug        string
-	Excerpt     string
-	Content     template.HTML
-	URL         string
-	ReadingTime int
+	Title         string
+	Date          string
+	DateFormatted string
+	Slug          string
+	Excerpt       string
+	Content       template.HTML
+	URL           string
+	ReadingTime   int
 }
 
 type blogFrontmatter struct {
 	Title string `yaml:"title"`
 	Date  string `yaml:"date"`
 	Slug  string `yaml:"slug"`
+	Draft bool   `yaml:"draft"`
 }
 
 type sitemapURL struct {
@@ -169,6 +174,12 @@ func main() {
 	for i := range data.Posts {
 		postData := data
 		postData.Post = &data.Posts[i]
+		if i > 0 {
+			postData.PrevPost = &data.Posts[i-1]
+		}
+		if i < len(data.Posts)-1 {
+			postData.NextPost = &data.Posts[i+1]
+		}
 		postDir := filepath.Join("public/blog", data.Posts[i].Slug)
 		os.MkdirAll(postDir, 0755)
 		renderTemplate("templates/blog-post.html", filepath.Join(postDir, "index.html"), postData)
@@ -191,6 +202,9 @@ func main() {
 
 	// Sitemap
 	generateSitemap(data)
+
+	// RSS Feed
+	generateFeed(data)
 
 	// Robots.txt
 	generateRobots()
@@ -223,6 +237,7 @@ func loadPageData() PageData {
 	data.Year = time.Now().Year()
 
 	data.Config = mustParseYAML[Config](contentPath("config.yaml"))
+	data.BaseURL = "https://" + data.Config.Username + ".github.io"
 	data.Pages = mustParseYAML[Pages](contentPath("pages.yaml"))
 	data.Resume = mustParseYAML[Resume](contentPath("resume.yaml"))
 	data.Now = mustParseYAML[Now](contentPath("now.yaml"))
@@ -249,6 +264,9 @@ func loadBlogPosts() []BlogPost {
 		}
 
 		post := parseBlogPost(filepath.Join("content/blog", entry.Name()))
+		if post.Date == "" {
+			continue // skip drafts or unparseable
+		}
 		posts = append(posts, post)
 	}
 
@@ -285,6 +303,10 @@ func parseBlogPost(path string) BlogPost {
 		}
 	}
 
+	if fm.Draft {
+		return BlogPost{Date: ""}
+	}
+
 	// Calculate reading time (average 200 words per minute)
 	wordCount := len(strings.Fields(content))
 	readingTime := wordCount / 200
@@ -318,14 +340,23 @@ func parseBlogPost(path string) BlogPost {
 	excerpt = strings.ReplaceAll(excerpt, "\n", " ")
 
 	return BlogPost{
-		Title:       fm.Title,
-		Date:        fm.Date,
-		Slug:        fm.Slug,
-		Excerpt:     excerpt,
-		Content:     template.HTML(highlighted),
-		URL:         fmt.Sprintf("/blog/%s/", fm.Slug),
-		ReadingTime: readingTime,
+		Title:         fm.Title,
+		Date:          fm.Date,
+		DateFormatted: formatDate(fm.Date),
+		Slug:          fm.Slug,
+		Excerpt:       excerpt,
+		Content:       template.HTML(highlighted),
+		URL:           fmt.Sprintf("/blog/%s/", fm.Slug),
+		ReadingTime:   readingTime,
 	}
+}
+
+func formatDate(date string) string {
+	t, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return date
+	}
+	return t.Format("January 2, 2006")
 }
 
 func highlightCodeBlocks(htmlContent string) string {
@@ -376,6 +407,38 @@ func highlightCodeBlocks(htmlContent string) string {
 
 		return fmt.Sprintf(`<div class="highlight"><pre class="chroma">%s</pre></div>`, buf.String())
 	})
+}
+
+func generateFeed(data PageData) {
+	baseURL := data.BaseURL
+	now := time.Now().Format(time.RFC3339)
+
+	var buf bytes.Buffer
+	buf.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
+	buf.WriteString(`<feed xmlns="http://www.w3.org/2005/Atom">` + "\n")
+	buf.WriteString(fmt.Sprintf("  <title>%s</title>\n", data.Config.Name+"'s Blog"))
+	buf.WriteString(fmt.Sprintf("  <link href=\"%s/blog/\"/>\n", baseURL))
+	buf.WriteString(fmt.Sprintf("  <link rel=\"self\" href=\"%s/feed.xml\"/>\n", baseURL))
+	buf.WriteString(fmt.Sprintf("  <updated>%s</updated>\n", now))
+	buf.WriteString(fmt.Sprintf("  <id>%s/blog/</id>\n", baseURL))
+	buf.WriteString(fmt.Sprintf("  <author><name>%s</name></author>\n", data.Config.Name))
+
+	for _, post := range data.Posts {
+		postDate, _ := time.Parse("2006-01-02", post.Date)
+		buf.WriteString("  <entry>\n")
+		buf.WriteString(fmt.Sprintf("    <title>%s</title>\n", template.HTMLEscapeString(post.Title)))
+		buf.WriteString(fmt.Sprintf("    <link href=\"%s%s\"/>\n", baseURL, post.URL))
+		buf.WriteString(fmt.Sprintf("    <id>%s%s</id>\n", baseURL, post.URL))
+		buf.WriteString(fmt.Sprintf("    <updated>%s</updated>\n", postDate.Format(time.RFC3339)))
+		buf.WriteString(fmt.Sprintf("    <summary>%s</summary>\n", template.HTMLEscapeString(post.Excerpt)))
+		buf.WriteString("  </entry>\n")
+	}
+
+	buf.WriteString("</feed>\n")
+
+	if err := os.WriteFile("public/feed.xml", buf.Bytes(), 0644); err != nil {
+		log.Fatalf("Error writing feed: %v", err)
+	}
 }
 
 func generateSitemap(data PageData) {

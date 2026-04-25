@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Now — @{{.Config.Username}}</title>
     <meta name="description" content="What {{.Config.Name}} is currently working on, learning, and reading.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" type="application/atom+xml" title="{{.Config.Name}}'s Blog" href="{{.BaseURL}}/feed.xml">
+    <link rel="canonical" href="{{.BaseURL}}/now/">
+    <meta property="og:title" content="Now — @{{.Config.Username}}">
+    <meta property="og:description" content="What {{.Config.Name}} is currently working on, learning, and reading.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{.BaseURL}}/now/">
+    <meta property="og:image" content="{{.BaseURL}}/og-image.svg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Now — @{{.Config.Username}}">
+    <meta name="twitter:description" content="What {{.Config.Name}} is currently working on, learning, and reading.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Now — @{{.Config.Username}}",
+      "url": "{{.BaseURL}}/now/"
+    }
+    </script>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>

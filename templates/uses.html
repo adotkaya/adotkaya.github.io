@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uses — @{{.Config.Username}}</title>
     <meta name="description" content="Tools, software, and hardware used by {{.Config.Name}}.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" type="application/atom+xml" title="{{.Config.Name}}'s Blog" href="{{.BaseURL}}/feed.xml">
+    <link rel="canonical" href="{{.BaseURL}}/uses/">
+    <meta property="og:title" content="Uses — @{{.Config.Username}}">
+    <meta property="og:description" content="Tools, software, and hardware used by {{.Config.Name}}.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{.BaseURL}}/uses/">
+    <meta property="og:image" content="{{.BaseURL}}/og-image.svg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Uses — @{{.Config.Username}}">
+    <meta name="twitter:description" content="Tools, software, and hardware used by {{.Config.Name}}.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Uses — @{{.Config.Username}}",
+      "url": "{{.BaseURL}}/uses/"
+    }
+    </script>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>

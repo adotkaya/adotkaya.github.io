@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 — @{{.Config.Username}}</title>
+    <meta name="description" content="Page not found.">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate" type="application/atom+xml" title="{{.Config.Name}}'s Blog" href="{{.BaseURL}}/feed.xml">
+    <meta property="og:title" content="404 — @{{.Config.Username}}">
+    <meta property="og:description" content="Page not found.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{.BaseURL}}/404.html">
+    <meta property="og:image" content="{{.BaseURL}}/og-image.svg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="404 — @{{.Config.Username}}">
+    <meta name="twitter:description" content="Page not found.">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
