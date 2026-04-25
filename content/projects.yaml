@@ -1,7 +1,24 @@
-- name: "Example Project"
-  description: "A brief description of what this project does and why it matters. Keep it concise but informative."
-  url: "https://github.com/adotkaya/example"
+- name: "go-microservice-cargotrack"
+  description: "A modular microservice implementing Domain-Driven Design (DDD) and Clean Architecture principles. Focused on separation of concerns with Entities, Aggregates, and Repositories for a highly maintainable and testable Go codebase."
+  url: "https://github.com/adotkaya/go-microservice-cargotrack"
   tech_stack:
     - "go"
     - "postgresql"
-    - "docker"
+
+- name: "go-hex"
+  description: "A backend service demonstrating Hexagonal Architecture to decouple core business logic from external frameworks and database drivers."
+  url: "https://github.com/adotkaya/go-hex"
+  tech_stack:
+    - "go"
+
+- name: "proglog"
+  description: "A distributed log service that manages state across nodes, utilizing Go's concurrency primitives (Mutexes, Channels) to ensure thread-safety and high performance."
+  url: "https://github.com/adotkaya/proglog"
+  tech_stack:
+    - "go"
+
+- name: "go-chat"
+  description: "Real-time chat application showcasing Go concurrency patterns and goroutines."
+  url: "https://github.com/adotkaya/go-chat"
+  tech_stack:
+    - "go"

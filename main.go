@@ -11,11 +11,12 @@ import (
 )
 
 type Site struct {
-	Config   Config
-	Projects []Project
-	Books    []Book
-	Tools    []Tool
-	Year     int
+	Config     Config
+	Experience []Experience
+	Projects   []Project
+	Books      []Book
+	Tools      []Tool
+	Year       int
 }
 
 type Config struct {
@@ -40,19 +41,35 @@ type Book struct {
 	Author string `yaml:"author"`
 }
 
+type Experience struct {
+	Company string   `yaml:"company"`
+	Role    string   `yaml:"role"`
+	Period  string   `yaml:"period"`
+	Points  []string `yaml:"points"`
+}
+
 type Tool struct {
 	Name string `yaml:"name"`
 	Icon string `yaml:"icon"`
+}
+
+func contentPath(filename string) string {
+	primary := filepath.Join("content", filename)
+	if _, err := os.Stat(primary); err == nil {
+		return primary
+	}
+	return filepath.Join("content-example", filename)
 }
 
 func main() {
 	var site Site
 	site.Year = time.Now().Year()
 
-	site.Config = mustParseYAML[Config]("content/config.yaml")
-	site.Projects = mustParseYAML[[]Project]("content/projects.yaml")
-	site.Books = mustParseYAML[[]Book]("content/books.yaml")
-	site.Tools = mustParseYAML[[]Tool]("content/tools.yaml")
+	site.Config = mustParseYAML[Config](contentPath("config.yaml"))
+	site.Experience = mustParseYAML[[]Experience](contentPath("experience.yaml"))
+	site.Projects = mustParseYAML[[]Project](contentPath("projects.yaml"))
+	site.Books = mustParseYAML[[]Book](contentPath("books.yaml"))
+	site.Tools = mustParseYAML[[]Tool](contentPath("tools.yaml"))
 
 	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {

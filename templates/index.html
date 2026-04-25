@@ -10,7 +10,7 @@
     <div class="container">
         <header class="hero">
             <h1 class="hero-title">@adotkaya</h1>
-            <p class="hero-subtitle">aka adot, A. Kaya</p>
+            <p class="hero-subtitle">aka adot, {{.Config.Name}}</p>
             <div class="socials">
                 <a href="{{.Config.GitHub}}" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <a href="{{.Config.LinkedIn}}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -20,6 +20,24 @@
         <section class="about">
             <h2>About</h2>
             <p>{{.Config.About}}</p>
+        </section>
+
+        <section class="experience">
+            <h2>Experience</h2>
+            {{range .Experience}}
+            <div class="job">
+                <div class="job-header">
+                    <h3>{{.Company}}</h3>
+                    <span class="job-role">{{.Role}}</span>
+                    <span class="job-period">{{.Period}}</span>
+                </div>
+                <ul class="job-points">
+                    {{range .Points}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}
         </section>
 
         <section class="projects">

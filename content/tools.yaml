@@ -1,14 +1,32 @@
 - name: "Go"
   icon: "go"
 
-- name: "Neovim"
-  icon: "neovim"
+- name: "C#"
+  icon: "csharp"
 
-- name: "Arch Linux"
-  icon: "archlinux"
+- name: ".NET"
+  icon: "dotnet"
+
+- name: "PostgreSQL"
+  icon: "postgresql"
+
+- name: "Redis"
+  icon: "redis"
 
 - name: "Docker"
   icon: "docker"
 
-- name: "PostgreSQL"
+- name: "Linux"
+  icon: "linux"
+
+- name: "Jenkins"
+  icon: "jenkins"
+
+- name: "Git"
+  icon: "git"
+
+- name: "Python"
+  icon: "python"
+
+- name: "SQL"
   icon: "postgresql"

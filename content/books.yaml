@@ -1,8 +1,14 @@
+- title: "Let's Go"
+  author: "Alex Edwards"
+
+- title: "Let's Go Further"
+  author: "Alex Edwards"
+
+- title: "Learning Go: An Idiomatic Approach to Real-World Go Programming"
+  author: "Jon Bodner"
+
 - title: "The Pragmatic Programmer"
-  author: "Andrew Hunt, David Thomas"
+  author: "David Thomas, Andrew Hunt"
 
-- title: "Designing Data-Intensive Applications"
-  author: "Martin Kleppmann"
-
-- title: "Clean Code"
-  author: "Robert C. Martin"
+- title: "Distributed Services with Go"
+  author: "Travis Jeffrey"

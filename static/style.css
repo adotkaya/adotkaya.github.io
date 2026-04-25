@@ -94,6 +94,69 @@ section h2 {
     line-height: 1.7;
 }
 
+/* Experience */
+.experience {
+    margin-bottom: 5rem;
+}
+
+.job {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.job:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.job-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.job-header h3 {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.job-role {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+.job-period {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.job-points {
+    list-style: none;
+    padding-left: 0;
+}
+
+.job-points li {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.job-points li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+}
+
 /* Projects */
 .project {
     margin-bottom: 2.5rem;
