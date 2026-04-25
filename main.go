@@ -105,6 +105,7 @@ type Project struct {
 type Book struct {
 	Title  string `yaml:"title"`
 	Author string `yaml:"author"`
+	Status string `yaml:"status"`
 }
 
 type Experience struct {
@@ -180,6 +181,10 @@ func main() {
 	// Uses
 	os.MkdirAll("public/uses", 0755)
 	renderTemplate("templates/uses.html", "public/uses/index.html", data)
+
+	// Books
+	os.MkdirAll("public/books", 0755)
+	renderTemplate("templates/books.html", "public/books/index.html", data)
 
 	// 404
 	renderTemplate("templates/404.html", "public/404.html", data)
@@ -384,6 +389,7 @@ func generateSitemap(data PageData) {
 		{baseURL + "/blog/", now, "weekly", "0.9"},
 		{baseURL + "/now/", now, "weekly", "0.6"},
 		{baseURL + "/uses/", now, "monthly", "0.6"},
+		{baseURL + "/books/", now, "monthly", "0.6"},
 	}
 
 	for _, post := range data.Posts {

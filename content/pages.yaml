@@ -5,6 +5,7 @@ subtitles:
   blog: "Thoughts on software, systems, and learning."
   now: "What I'm currently focused on."
   uses: "The tools, software, and hardware I use to build things."
+  books: "Books I've read, I'm reading, or planning to read."
 
 # Home page section link texts
 links:
@@ -12,3 +13,4 @@ links:
   projects: "View all projects →"
   uses: "View full setup →"
   blog: "Read my thoughts →"
+  books: "See my bookshelf →"
