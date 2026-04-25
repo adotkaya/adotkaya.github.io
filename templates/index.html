@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@adotkaya</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1 class="hero-title">@adotkaya</h1>
+            <p class="hero-subtitle">aka adot, A. Kaya</p>
+            <div class="socials">
+                <a href="{{.Config.GitHub}}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="{{.Config.LinkedIn}}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+        </header>
+
+        <section class="about">
+            <h2>About</h2>
+            <p>{{.Config.About}}</p>
+        </section>
+
+        <section class="projects">
+            <h2>Projects</h2>
+            {{range .Projects}}
+            <div class="project">
+                <div class="project-header">
+                    <h3><a href="{{.URL}}" target="_blank" rel="noopener noreferrer">{{.Name}}</a></h3>
+                    <div class="tech-stack">
+                        {{range .TechStack}}
+                        <img src="https://cdn.simpleicons.org/{{.}}/9ca3af" alt="{{.}}" title="{{.}}" class="tech-icon">
+                        {{end}}
+                    </div>
+                </div>
+                <p class="project-desc">{{.Description}}</p>
+            </div>
+            {{end}}
+        </section>
+
+        <section class="tools">
+            <h2>Tools</h2>
+            <div class="tools-grid">
+                {{range .Tools}}
+                <div class="tool">
+                    <img src="https://cdn.simpleicons.org/{{.Icon}}/9ca3af" alt="{{.Name}}" class="tool-icon">
+                    <span class="tool-name">{{.Name}}</span>
+                </div>
+                {{end}}
+            </div>
+        </section>
+
+        <section class="books">
+            <h2>Books</h2>
+            <ul class="book-list">
+                {{range .Books}}
+                <li>
+                    <span class="book-title">{{.Title}}</span>
+                    <span class="book-author">— {{.Author}}</span>
+                </li>
+                {{end}}
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; {{.Year}} @adotkaya</p>
+        </footer>
+    </div>
+</body>
+</html>

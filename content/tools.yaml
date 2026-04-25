@@ -1,0 +1,14 @@
+- name: "Go"
+  icon: "go"
+
+- name: "Neovim"
+  icon: "neovim"
+
+- name: "Arch Linux"
+  icon: "archlinux"
+
+- name: "Docker"
+  icon: "docker"
+
+- name: "PostgreSQL"
+  icon: "postgresql"

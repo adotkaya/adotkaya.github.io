@@ -1,0 +1,21 @@
+# Generated output
+public/
+
+# Go binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
