@@ -7,16 +7,16 @@
     - "Led end-to-end testing for 4 concurrent projects with a 100% success rate."
     - "Built a Power Apps mission tracking solution, replacing Excel for 50+ international operations."
 
-- company: "Semafor Teknoloji"
-  role: "Software Developer Intern"
-  period: "05/2023 – 08/2023"
-  points:
-    - "Developed a healthcare appointment system serving 500+ monthly appointments."
-    - "Implemented JWT role-based auth and reduced data redundancy by 60% via PostgreSQL normalization."
-
 - company: "Insight Bilişim"
   role: "Co-Founder & Software Developer"
   period: "01/2021 – 04/2023"
   points:
     - "Co-founded IoT and e-commerce startup; built modular environmental monitoring with Python."
     - "Developed e-commerce platform handling product catalog, payments, and order management."
+
+- company: "Semafor Teknoloji"
+  role: "Software Developer Intern"
+  period: "05/2023 – 08/2023"
+  points:
+    - "Developed a healthcare appointment system serving 500+ monthly appointments."
+    - "Implemented JWT role-based auth and reduced data redundancy by 60% via PostgreSQL normalization."

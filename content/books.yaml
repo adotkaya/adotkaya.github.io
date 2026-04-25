@@ -1,8 +1,5 @@
-- title: "Let's Go"
-  author: "Alex Edwards"
-
-- title: "Let's Go Further"
-  author: "Alex Edwards"
+- title: "Designing Data-Intensive Applications"
+  author: "Martin Kleppmann"
 
 - title: "Learning Go: An Idiomatic Approach to Real-World Go Programming"
   author: "Jon Bodner"
@@ -12,3 +9,9 @@
 
 - title: "Distributed Services with Go"
   author: "Travis Jeffrey"
+
+- title: "Let's Go"
+  author: "Alex Edwards"
+
+- title: "Let's Go Further"
+  author: "Alex Edwards"
