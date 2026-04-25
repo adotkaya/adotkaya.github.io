@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — @{{.Config.Username}}</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <ul class="nav-links">
+            <li><a href="/resume/">Resume</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/uses/">Uses</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="not-found">
+            <h1>404</h1>
+            <p>This page does not exist.</p>
+            <a href="/">← Back home</a>
+        </div>
+
+        <footer>
+            <p>&copy; {{.Year}} @{{.Config.Username}}</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume — @{{.Config.Username}}</title>
+    <meta name="description" content="Resume of {{.Config.Name}} — {{.Config.Bio}}">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <ul class="nav-links">
+            <li><a href="/resume/">Resume</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/uses/">Uses</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <article class="resume">
+            <header class="resume-header">
+                <h1>{{.Config.Name}}</h1>
+                <p class="resume-tagline">{{.Config.Bio}}</p>
+                <div class="resume-meta">
+                    <span>{{.Config.Location}}</span>
+                    <a href="{{.Config.GitHub}}">GitHub</a>
+                    <a href="{{.Config.LinkedIn}}">LinkedIn</a>
+                </div>
+            </header>
+
+            <section class="resume-section">
+                <h2>Professional Summary</h2>
+                <p>{{.Resume.Summary}}</p>
+            </section>
+
+            <section class="resume-section">
+                <h2>Technical Skills</h2>
+                <div class="skill-groups">
+                    {{range .Resume.Skills}}
+                    <div class="skill-group">
+                        <h3>{{.Category}}</h3>
+                        <p>{{.Items}}</p>
+                    </div>
+                    {{end}}
+                </div>
+            </section>
+
+            <section class="resume-section">
+                <h2>Work Experience</h2>
+                {{range .Experience}}
+                <div class="job">
+                    <div class="job-header">
+                        <h3>{{.Company}}</h3>
+                        <span class="job-role">{{.Role}}</span>
+                        <span class="job-period">{{.Period}}</span>
+                    </div>
+                    <ul class="job-points">
+                        {{range .Points}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </div>
+                {{end}}
+            </section>
+
+            <section class="resume-section">
+                <h2>Education</h2>
+                {{range .Resume.Education}}
+                <div class="education-item">
+                    <h3>{{.Institution}}</h3>
+                    <p class="education-degree">{{.Degree}}</p>
+                    <p class="education-period">{{.Period}}</p>
+                    <ul class="education-notes">
+                        {{range .Notes}}
+                        <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </div>
+                {{end}}
+            </section>
+
+            <section class="resume-section">
+                <h2>Projects</h2>
+                <div class="resume-projects">
+                    {{range .Projects}}
+                    <div class="resume-project">
+                        <h3><a href="{{.URL}}" target="_blank" rel="noopener noreferrer">{{.Name}}</a></h3>
+                        <p>{{.Description}}</p>
+                        <div class="project-tech">
+                            {{range .TechStack}}
+                            <span class="tech-tag">{{.}}</span>
+                            {{end}}
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </section>
+        </article>
+
+        <footer>
+            <p>&copy; {{.Year}} @{{.Config.Username}}</p>
+        </footer>
+    </div>
+</body>
+</html>

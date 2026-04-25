@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=none
+# Uses page content
+
+sections:
+  - title: "Development"
+    items:
+      - label: "Editor"
+        value: "Zed — fast and minimal"
+      - label: "OS"
+        value: "Omarchy"
+      - label: "Terminal"
+        value: "Tabby"
+      - label: "Shell"
+        value: "zsh with minimal prompt"
+      - label: "Version Control"
+        value: "Git, hosted on GitHub"
+
+  - title: "Languages & Frameworks"
+    items:
+      - label: "Go"
+        value: "primary language for backend services and systems programming"
+      - label: "C# / .NET Core"
+        value: "professional experience, legacy maintenance"
+      - label: "PostgreSQL"
+        value: "relational database of choice"
+      - label: "Docker"
+        value: "containerization for local dev and deployment"
+      - label: "Redis"
+        value: "caching and session storage"
+
+  - title: "Workflow"
+    items:
+      - value: "Terminal-centric workflow — most tasks done via CLI"
+      - value: "Git workflow: feature branches, rebase before merge, clean history"
+      - value: "Focus on automation: scripts for repetitive tasks"
+      - value: "Documentation as code: Markdown for notes, README-driven development"

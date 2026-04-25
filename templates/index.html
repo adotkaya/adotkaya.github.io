@@ -11,6 +11,16 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+    <nav class="main-nav">
+        <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <ul class="nav-links">
+            <li><a href="/resume/">Resume</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/uses/">Uses</a></li>
+        </ul>
+    </nav>
     <div class="container">
         <header class="hero">
             <h1 class="hero-title">@{{.Config.Username}}</h1>
@@ -26,22 +36,25 @@
             <p>{{.Config.About}}</p>
         </section>
 
-        <section class="experience-summary">
-            <h2>Experience</h2>
-            <div class="experience-list">
-                {{range .Experience}}
-                <div class="exp-item">
-                    <h3>{{.Company}}</h3>
-                    <span class="exp-role">{{.Role}}</span>
-                    <span class="exp-period">{{.Period}}</span>
-                </div>
+        <section class="latest-posts">
+            <h2>Latest Posts</h2>
+            <div class="post-previews">
+                {{range .Posts}}
+                <article class="post-preview">
+                    <div class="post-preview-meta">
+                        <time datetime="{{.Date}}">{{.Date}}</time>
+                        <span class="reading-time">{{.ReadingTime}} min read</span>
+                    </div>
+                    <h3><a href="{{.URL}}">{{.Title}}</a></h3>
+                    <p class="post-preview-excerpt">{{.Excerpt}}</p>
+                </article>
                 {{end}}
             </div>
-            <a href="/resume/" class="section-link">View full resume &rarr;</a>
+            <a href="/blog/" class="section-link">{{index .Pages.Links "blog"}}</a>
         </section>
 
-        <section class="projects">
-            <h2>Featured Projects</h2>
+        <section class="featured-projects">
+            <h2>Projects</h2>
             {{range .Projects}}
             <div class="project">
                 <div class="project-header">
@@ -55,33 +68,7 @@
                 <p class="project-desc">{{.Description}}</p>
             </div>
             {{end}}
-            <a href="/projects/" class="section-link">View all projects &rarr;</a>
-        </section>
-
-        <section class="tools-summary">
-            <h2>Tools</h2>
-            <div class="tools-grid">
-                {{range .Tools}}
-                <div class="tool">
-                    <img src="https://cdn.simpleicons.org/{{.Icon}}/9ca3af" alt="{{.Name}}" class="tool-icon">
-                    <span class="tool-name">{{.Name}}</span>
-                </div>
-                {{end}}
-            </div>
-            <a href="/uses/" class="section-link">View full setup &rarr;</a>
-        </section>
-
-        <section class="books-summary">
-            <h2>Reading</h2>
-            <ul class="book-list">
-                {{range .Books}}
-                <li>
-                    <span class="book-title">{{.Title}}</span>
-                    <span class="book-author">— {{.Author}}</span>
-                </li>
-                {{end}}
-            </ul>
-            <a href="/blog/" class="section-link">Read my thoughts &rarr;</a>
+            <a href="/projects/" class="section-link">{{index .Pages.Links "projects"}}</a>
         </section>
 
         <footer>

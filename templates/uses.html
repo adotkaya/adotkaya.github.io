@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uses — @{{.Config.Username}}</title>
+    <meta name="description" content="Tools, software, and hardware used by {{.Config.Name}}.">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <ul class="nav-links">
+            <li><a href="/resume/">Resume</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/uses/">Uses</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <header class="page-header">
+            <h1>Uses</h1>
+            <p>{{index .Pages.Subtitles "uses"}}</p>
+        </header>
+
+        {{range .Uses.Sections}}
+        <section class="uses-section">
+            <h2>{{.Title}}</h2>
+            <ul class="uses-list">
+                {{range .Items}}
+                <li>
+                    {{if .Label}}<strong>{{.Label}}:</strong> {{end}}{{.Value}}
+                </li>
+                {{end}}
+            </ul>
+        </section>
+        {{end}}
+
+        <footer>
+            <p>&copy; {{.Year}} @{{.Config.Username}}</p>
+        </footer>
+    </div>
+</body>
+</html>

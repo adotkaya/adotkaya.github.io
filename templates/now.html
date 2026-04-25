@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Now — @{{.Config.Username}}</title>
+    <meta name="description" content="What {{.Config.Name}} is currently working on, learning, and reading.">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <ul class="nav-links">
+            <li><a href="/resume/">Resume</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/uses/">Uses</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <header class="page-header">
+            <h1>Now</h1>
+            <p class="now-updated">Last updated: {{.Now.LastUpdated}}</p>
+        </header>
+
+        <section class="now-content">
+            {{range .Now.Items}}
+            <div class="now-item">
+                <h2>{{.Title}}</h2>
+                <p>{{.Content}}</p>
+            </div>
+            {{end}}
+        </section>
+
+        <p class="now-note">{{.Now.Note}}</p>
+
+        <footer>
+            <p>&copy; {{.Year}} @{{.Config.Username}}</p>
+        </footer>
+    </div>
+</body>
+</html>

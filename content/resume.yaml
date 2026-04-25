@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=none
+# Resume page content
+
+summary: "Backend Software Developer with over 2 years of professional experience in .NET ecosystems. Actively transitioning to Go (Golang) for high-performance applications, with a deep focus on Clean Architecture, concurrency, and distributed systems. Proven track record of delivering scalable REST APIs, optimizing database performance by 40%, and leading testing initiatives for international telecom projects."
+
+skills:
+  - category: "Languages"
+    items: "Go (Golang), C#, .NET Core, SQL, Python"
+  - category: "Go Ecosystem"
+    items: "Clean Architecture, Gin, Fiber, Concurrency (Goroutines/Channels), WebSockets"
+  - category: "Databases & Tools"
+    items: "PostgreSQL, Redis, Docker, Git, Linux, Jenkins"
+  - category: "Practices"
+    items: "REST API Design, Database Optimization, Agile, Domain-Driven Design (DDD)"
+
+education:
+  - institution: "Yasar University"
+    degree: "Bachelor of Computer Engineering"
+    period: "2019 – 2024"
+    notes:
+      - "English Proficiency: C1 Certified Level (1-year intensive prep)"
+      - "Founder & Chairman, YUCHAIN (Blockchain and Finance Club)"
+      - "Management Board, IEEE Yasar University — Sponsorship Coordinator"

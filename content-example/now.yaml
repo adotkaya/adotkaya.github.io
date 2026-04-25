@@ -1,0 +1,15 @@
+# Now page content
+
+last_updated: "Month YYYY"
+
+items:
+  - title: "Building"
+    content: "What you're currently building or working on."
+  - title: "Learning"
+    content: "What you're currently studying or exploring."
+  - title: "Reading"
+    content: "What you're currently reading."
+
+note: "This is a /now page. It reflects what I'm focused on right now."
+note_link: "https://nownownow.com/about"
+note_link_text: "/now page"

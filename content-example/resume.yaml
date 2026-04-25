@@ -1,0 +1,21 @@
+# Resume page content
+
+summary: "A brief professional summary describing your background, expertise, and what you're looking for. Keep it under 3 sentences."
+
+skills:
+  - category: "Languages"
+    items: "Your primary programming languages"
+  - category: "Frameworks"
+    items: "Frameworks and libraries you work with"
+  - category: "Tools"
+    items: "Development tools and platforms"
+  - category: "Practices"
+    items: "Methodologies and approaches you follow"
+
+education:
+  - institution: "University Name"
+    degree: "Your Degree"
+    period: "YYYY – YYYY"
+    notes:
+      - "A notable achievement or certification"
+      - "Relevant coursework or activities"

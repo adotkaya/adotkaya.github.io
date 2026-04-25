@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — @{{.Config.Username}}</title>
+    <meta name="description" content="Projects by {{.Config.Name}} — {{.Config.Bio}}">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <ul class="nav-links">
+            <li><a href="/resume/">Resume</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/uses/">Uses</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <header class="page-header">
+            <h1>Projects</h1>
+            <p>{{index .Pages.Subtitles "projects"}}</p>
+        </header>
+
+        <section class="projects-full">
+            {{range .Projects}}
+            <article class="project-card">
+                <div class="project-card-header">
+                    <h2><a href="{{.URL}}" target="_blank" rel="noopener noreferrer">{{.Name}}</a></h2>
+                    <div class="tech-stack">
+                        {{range .TechStack}}
+                        <img src="https://cdn.simpleicons.org/{{.}}/9ca3af" alt="{{.}}" title="{{.}}" class="tech-icon">
+                        {{end}}
+                    </div>
+                </div>
+                <p class="project-card-desc">{{.Description}}</p>
+            </article>
+            {{end}}
+        </section>
+
+        <footer>
+            <p>&copy; {{.Year}} @{{.Config.Username}}</p>
+        </footer>
+    </div>
+</body>
+</html>

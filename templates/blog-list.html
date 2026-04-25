@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — @{{.Config.Username}}</title>
+    <meta name="description" content="Blog by {{.Config.Name}} — {{index .Pages.Subtitles "blog"}}">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <ul class="nav-links">
+            <li><a href="/resume/">Resume</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/now/">Now</a></li>
+            <li><a href="/uses/">Uses</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <header class="page-header">
+            <h1>Blog</h1>
+            <p>{{index .Pages.Subtitles "blog"}}</p>
+        </header>
+
+        <section class="blog-list">
+            {{range .Posts}}
+            <article class="blog-preview">
+                <div class="blog-preview-meta">
+                    <time datetime="{{.Date}}">{{.Date}}</time>
+                    <span class="reading-time">{{.ReadingTime}} min read</span>
+                </div>
+                <h2><a href="{{.URL}}">{{.Title}}</a></h2>
+                <p class="blog-excerpt">{{.Excerpt}}</p>
+            </article>
+            {{end}}
+        </section>
+
+        <footer>
+            <p>&copy; {{.Year}} @{{.Config.Username}}</p>
+        </footer>
+    </div>
+</body>
+</html>
