@@ -18,8 +18,9 @@ This is not a template built on Next.js, Astro, or Hugo. It is a single Go progr
 
 - **Home page** with bio, latest posts, and featured projects (auto-fetched from GitHub)
 - **Blog** with single-file posts and folder-based composite posts (Obsidian vault friendly)
-- **Resume** page with skills, experience, and education
+- **Resume** page with skills, experience, and education — shows only pinned projects
 - **Projects** page auto-fetched from GitHub with language detection, fork/archived badges, and YAML overrides
+- **CSS-only mobile nav** — hamburger menu without any JavaScript
 - **Now** page for current status
 - **Uses** page for tools and gear
 - **Bookshelf** page with reading status badges
@@ -166,7 +167,7 @@ Your projects page is populated automatically at build time by fetching your pub
   tech_stack:               # overrides auto-detected language
     - "go"
     - "postgresql"
-  pinned: true              # shows on home page (max 6)
+  pinned: true              # shows on home page and resume (max 6)
   exclude: true             # hides repo everywhere
 ```
 
@@ -192,6 +193,8 @@ Add a private repo or external project not on GitHub:
   tech_stack: ["go", "redis"]
   pinned: true
 ```
+
+**Resume page:** The resume page shows **only pinned projects** (no fallback). If you have no pinned repos, the Projects section on the resume is hidden entirely. This keeps your resume concise and curated.
 
 **Rate limiting:** The GitHub API allows 60 requests/hour without authentication (we make 1 request per build). This is plenty for normal development. If you hit the limit during heavy development, you can optionally set a `GITHUB_TOKEN`:
 
