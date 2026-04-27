@@ -48,7 +48,11 @@
             {{range .Projects}}
             <article class="project-card">
                 <div class="project-card-header">
-                    <h2><a href="{{.URL}}" target="_blank" rel="noopener noreferrer">{{.Name}}</a></h2>
+                    <h2>
+                        <a href="{{.URL}}" target="_blank" rel="noopener noreferrer">{{.Name}}</a>
+                        {{if .IsFork}}<span class="project-badge badge-fork">fork</span>{{end}}
+                        {{if .IsArchived}}<span class="project-badge badge-archived">archived</span>{{end}}
+                    </h2>
                     <div class="tech-stack">
                         {{range .TechStack}}
                         <img src="https://cdn.simpleicons.org/{{.}}/9ca3af" alt="{{.}}" title="{{.}}" class="tech-icon">

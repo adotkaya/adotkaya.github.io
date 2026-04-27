@@ -4,21 +4,31 @@
   tech_stack:
     - "go"
     - "postgresql"
+  pinned: true
 
 - name: "go-hex"
   description: "A backend service demonstrating Hexagonal Architecture to decouple core business logic from external frameworks and database drivers."
   url: "https://github.com/adotkaya/go-hex"
   tech_stack:
     - "go"
+  pinned: true
 
 - name: "proglog"
   description: "A distributed log service that manages state across nodes, utilizing Go's concurrency primitives (Mutexes, Channels) to ensure thread-safety and high performance."
   url: "https://github.com/adotkaya/proglog"
   tech_stack:
     - "go"
+  pinned: true
 
 - name: "go-chat"
   description: "Real-time chat application showcasing Go concurrency patterns and goroutines."
   url: "https://github.com/adotkaya/go-chat"
   tech_stack:
     - "go"
+  pinned: true
+
+- name: "adotkaya.github.io"
+  exclude: true
+
+- name: "adotkaya"
+  exclude: true

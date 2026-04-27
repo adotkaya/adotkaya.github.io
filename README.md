@@ -16,10 +16,10 @@ This is not a template built on Next.js, Astro, or Hugo. It is a single Go progr
 
 ## Features
 
-- **Home page** with bio, latest posts, and featured projects
-- **Blog** with single-file posts and folder-based composite posts ( Obsidian vault friendly)
+- **Home page** with bio, latest posts, and featured projects (auto-fetched from GitHub)
+- **Blog** with single-file posts and folder-based composite posts (Obsidian vault friendly)
 - **Resume** page with skills, experience, and education
-- **Projects** page with tech stack icons
+- **Projects** page auto-fetched from GitHub with language detection, fork/archived badges, and YAML overrides
 - **Now** page for current status
 - **Uses** page for tools and gear
 - **Bookshelf** page with reading status badges
@@ -146,12 +146,94 @@ content/blog/2026-04-27-my-post/
 - Obsidian wiki-links like `[[Another Note]]` are automatically converted to plain text.
 - Draft posts or folders prefixed with `_` are skipped.
 
-### 3. Updating Other Pages
+### 3. Projects — Auto-Fetched from GitHub + YAML Override
+
+Your projects page is populated automatically at build time by fetching your public GitHub repos via the GitHub API. `content/projects.yaml` acts as an optional overlay to customize descriptions, tech stacks, pinning, and exclusions.
+
+**How it works:**
+- On every build, `main.go` calls `https://api.github.com/users/{username}/repos`
+- All public repos are imported with auto-detected language icons
+- YAML entries override GitHub data for repos with matching names
+- Repos are sorted by last push date (newest first)
+- Forks and archived repos are included with small badges
+
+**YAML fields (all optional):**
+
+```yaml
+- name: "my-repo"           # must match GitHub repo name
+  description: "Custom description overrides GitHub's"
+  url: "https://github.com/you/my-repo"
+  tech_stack:               # overrides auto-detected language
+    - "go"
+    - "postgresql"
+  pinned: true              # shows on home page (max 6)
+  exclude: true             # hides repo everywhere
+```
+
+**Examples:**
+
+Pin a repo to the home page:
+```yaml
+- name: "cool-project"
+  pinned: true
+```
+
+Hide a repo you don't want listed:
+```yaml
+- name: "old-fork"
+  exclude: true
+```
+
+Add a private repo or external project not on GitHub:
+```yaml
+- name: "internal-tool"
+  description: "A private project at work"
+  url: "https://gitlab.com/you/internal-tool"
+  tech_stack: ["go", "redis"]
+  pinned: true
+```
+
+**Rate limiting:** The GitHub API allows 60 requests/hour without authentication (we make 1 request per build). This is plenty for normal development. If you hit the limit during heavy development, you can optionally set a `GITHUB_TOKEN`:
+
+```bash
+export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
+```
+
+This is completely optional. The site builds fine without it.
+
+**Build-time vs. runtime:** The GitHub API is called **only when the site is built** (`go run main.go`), not when a visitor loads the page. This means:
+
+- Creating a new repo on GitHub does **not** instantly update the site.
+- The new repo appears **after the next deploy** (the next time `go run main.go` runs).
+- The site is static HTML — there is no server, no database, and no background job checking for updates.
+
+**Deployment flow:**
+
+```
+You create a new repo on GitHub
+        ↓
+You push code to main (or trigger deploy.yml manually)
+        ↓
+GitHub Actions runs: go run main.go
+        ↓
+main.go fetches all repos from the GitHub API
+        ↓
+Static HTML is generated with the new repo included
+        ↓
+public/ folder is deployed to GitHub Pages
+        ↓
+Site now shows the new repo
+```
+
+To force a rebuild without pushing code, go to **Actions → Deploy to GitHub Pages → Run workflow**.
+
+**Daily auto-rebuild:** The workflow also runs on a schedule (`0 3 * * *` — every day at 3 AM UTC). This keeps your projects list in sync with GitHub automatically, even if you don't push any code. The scheduled rebuild is safe and public: it uses your repository's minimal permissions, consumes only 1 API request per day, and has no access to secrets.
+
+### 4. Updating Other Pages
 
 Edit the corresponding YAML files in `content/`:
 - `resume.yaml` — Summary, skills, education
 - `experience.yaml` — Work history
-- `projects.yaml` — Project cards with tech stack
 - `now.yaml` — What you're doing now
 - `uses.yaml` — Tools and gear
 - `books.yaml` — Reading list with status badges
@@ -199,6 +281,16 @@ That's it. No tokens, no secrets. The workflow uses OIDC for secure deployment.
 - **Zero runtime overhead:** No client-side hydration, no bundle size anxiety.
 - **Learning value:** Deeper understanding of template systems and static site fundamentals.
 - **Interview value:** The generator itself demonstrates systems thinking.
+
+## Security
+
+This project is designed to be secure by default:
+
+- **Zero runtime attack surface** — The output is plain static HTML/CSS. No server, no database, no APIs to exploit.
+- **No secrets in the repository** — No API keys, tokens, or credentials are hardcoded. The optional `GITHUB_TOKEN` is read from environment variables only.
+- **No client-side JavaScript** — No scripts, no cookies, no tracking, no XSS vectors.
+- **OIDC deployment** — GitHub Actions uses OpenID Connect to deploy to Pages. No long-lived personal access tokens stored as secrets.
+- **Go template auto-escaping** — All variables are HTML-escaped by default. User-authored Markdown is the only unescaped content.
 
 ## License
 

@@ -2,9 +2,11 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -22,21 +24,22 @@ import (
 )
 
 type PageData struct {
-	Config     Config
-	Pages      Pages
-	Resume     Resume
-	Now        Now
-	Uses       Uses
-	Experience []Experience
-	Projects   []Project
-	Books      []Book
-	Tools      []Tool
-	Posts      []BlogPost
-	Post       *BlogPost
-	PrevPost   *BlogPost
-	NextPost   *BlogPost
-	Year       int
-	BaseURL    string
+	Config         Config
+	Pages          Pages
+	Resume         Resume
+	Now            Now
+	Uses           Uses
+	Experience     []Experience
+	Projects       []Project
+	PinnedProjects []Project
+	Books          []Book
+	Tools          []Tool
+	Posts          []BlogPost
+	Post           *BlogPost
+	PrevPost       *BlogPost
+	NextPost       *BlogPost
+	Year           int
+	BaseURL        string
 }
 
 type Config struct {
@@ -104,6 +107,11 @@ type Project struct {
 	Description string   `yaml:"description"`
 	URL         string   `yaml:"url"`
 	TechStack   []string `yaml:"tech_stack"`
+	Pinned      bool     `yaml:"pinned"`
+	Exclude     bool     `yaml:"exclude"`
+	IsFork      bool
+	IsArchived  bool
+	PushedAt    time.Time
 }
 
 type Book struct {
@@ -244,10 +252,20 @@ func loadPageData() PageData {
 	data.Now = mustParseYAML[Now](contentPath("now.yaml"))
 	data.Uses = mustParseYAML[Uses](contentPath("uses.yaml"))
 	data.Experience = mustParseYAML[[]Experience](contentPath("experience.yaml"))
-	data.Projects = mustParseYAML[[]Project](contentPath("projects.yaml"))
 	data.Books = mustParseYAML[[]Book](contentPath("books.yaml"))
 	data.Tools = mustParseYAML[[]Tool](contentPath("tools.yaml"))
 	data.Posts = loadBlogPosts()
+
+	// Load projects: GitHub API + YAML overlay
+	yamlProjects := mustParseYAML[[]Project](contentPath("projects.yaml"))
+	githubProjects, err := fetchGitHubRepos(data.Config.Username)
+	if err != nil {
+		log.Printf("Warning: failed to fetch GitHub repos: %v", err)
+	}
+	merged := mergeProjects(yamlProjects, githubProjects)
+	sortProjectsByPushedAt(merged)
+	data.Projects = merged
+	data.PinnedProjects = getPinnedOrFallback(merged)
 
 	return data
 }
@@ -630,6 +648,199 @@ Sitemap: https://adotkaya.github.io/sitemap.xml
 	if err := os.WriteFile("public/robots.txt", []byte(content), 0644); err != nil {
 		log.Fatalf("Error writing robots.txt: %v", err)
 	}
+}
+
+// GitHub API integration for auto-fetching repos
+
+type githubRepo struct {
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	HTMLURL     string    `json:"html_url"`
+	Language    string    `json:"language"`
+	Fork        bool      `json:"fork"`
+	Archived    bool      `json:"archived"`
+	PushedAt    time.Time `json:"pushed_at"`
+}
+
+func fetchGitHubRepos(username string) ([]Project, error) {
+	if username == "" {
+		return nil, fmt.Errorf("no username configured")
+	}
+
+	url := fmt.Sprintf("https://api.github.com/users/%s/repos?sort=pushed&direction=desc&per_page=100", username)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+	req.Header.Set("User-Agent", "adotkaya-static-site-generator")
+
+	// Use GITHUB_TOKEN if available for higher rate limits
+	if token := os.Getenv("GITHUB_TOKEN"); token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
+	}
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("GitHub API returned %s", resp.Status)
+	}
+
+	var repos []githubRepo
+	if err := json.NewDecoder(resp.Body).Decode(&repos); err != nil {
+		return nil, err
+	}
+
+	var projects []Project
+	for _, r := range repos {
+		projects = append(projects, Project{
+			Name:        r.Name,
+			Description: r.Description,
+			URL:         r.HTMLURL,
+			TechStack:   languageToTechStack(r.Language),
+			IsFork:      r.Fork,
+			IsArchived:  r.Archived,
+			PushedAt:    r.PushedAt,
+		})
+	}
+
+	return projects, nil
+}
+
+func mergeProjects(yamlProjects, githubProjects []Project) []Project {
+	// Build lookup for ALL YAML entries (including excluded, so we can filter them out)
+	yamlMap := make(map[string]Project)
+	for _, p := range yamlProjects {
+		yamlMap[p.Name] = p
+	}
+
+	var merged []Project
+	seen := make(map[string]bool)
+
+	// Start with GitHub repos, applying YAML overrides
+	for _, gp := range githubProjects {
+		if seen[gp.Name] {
+			continue
+		}
+		seen[gp.Name] = true
+
+		if override, ok := yamlMap[gp.Name]; ok {
+			if override.Exclude {
+				continue
+			}
+			// Apply overrides while preserving GitHub metadata
+			if override.Description != "" {
+				gp.Description = override.Description
+			}
+			if override.URL != "" {
+				gp.URL = override.URL
+			}
+			if len(override.TechStack) > 0 {
+				gp.TechStack = override.TechStack
+			}
+			if override.Pinned {
+				gp.Pinned = true
+			}
+		}
+
+		merged = append(merged, gp)
+	}
+
+	// Append YAML-only projects (private repos or external links not on GitHub)
+	for _, yp := range yamlProjects {
+		if yp.Exclude || seen[yp.Name] {
+			continue
+		}
+		merged = append(merged, yp)
+	}
+
+	return merged
+}
+
+func sortProjectsByPushedAt(projects []Project) {
+	sort.Slice(projects, func(i, j int) bool {
+		return projects[i].PushedAt.After(projects[j].PushedAt)
+	})
+}
+
+func getPinnedOrFallback(projects []Project) []Project {
+	var pinned []Project
+	for _, p := range projects {
+		if p.Pinned {
+			pinned = append(pinned, p)
+		}
+	}
+
+	if len(pinned) == 0 {
+		// Fallback: top 3 most recently pushed
+		limit := 3
+		if len(projects) < limit {
+			limit = len(projects)
+		}
+		return projects[:limit]
+	}
+
+	if len(pinned) > 6 {
+		log.Printf("Warning: %d pinned repos found, showing first 6", len(pinned))
+		return pinned[:6]
+	}
+
+	return pinned
+}
+
+func languageToTechStack(language string) []string {
+	if language == "" {
+		return nil
+	}
+	mapping := map[string]string{
+		"Go":         "go",
+		"Python":     "python",
+		"JavaScript": "javascript",
+		"TypeScript": "typescript",
+		"Rust":       "rust",
+		"Java":       "java",
+		"C++":        "cplusplus",
+		"C":          "c",
+		"Ruby":       "ruby",
+		"Shell":      "gnubash",
+		"Dockerfile": "docker",
+		"HTML":       "html5",
+		"CSS":        "css3",
+		"Zig":        "zig",
+		"Nim":        "nim",
+		"Elixir":     "elixir",
+		"Haskell":    "haskell",
+		"Lua":        "lua",
+		"Swift":      "swift",
+		"Kotlin":     "kotlin",
+		"Scala":      "scala",
+		"PHP":        "php",
+		"R":          "r",
+		"C#":         "csharp",
+		"F#":         "fsharp",
+		"Dart":       "dart",
+		"Julia":      "julia",
+		"OCaml":      "ocaml",
+		"Perl":       "perl",
+		"Erlang":     "erlang",
+		"Clojure":    "clojure",
+		"Groovy":     "apachegroovy",
+		"Objective-C": "c",
+		"Vue":        "vuedotjs",
+		"Svelte":     "svelte",
+		"Solidity":   "solidity",
+		"V":          "v",
+	}
+	if slug, ok := mapping[language]; ok {
+		return []string{slug}
+	}
+	// Fallback: lowercase the language name
+	return []string{strings.ToLower(language)}
 }
 
 func contentPath(filename string) string {
