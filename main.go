@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
@@ -259,15 +260,28 @@ func loadBlogPosts() []BlogPost {
 
 	var posts []BlogPost
 	for _, entry := range entries {
-		if entry.IsDir() || !strings.HasSuffix(entry.Name(), ".md") {
+		name := entry.Name()
+
+		// Skip drafts (files or folders starting with "_")
+		if strings.HasPrefix(name, "_") {
 			continue
 		}
 
-		post := parseBlogPost(filepath.Join("content/blog", entry.Name()))
-		if post.Date == "" {
-			continue // skip drafts or unparseable
+		path := filepath.Join("content/blog", name)
+
+		if entry.IsDir() {
+			// Folder-based post
+			post := parseBlogPostFolder(path)
+			if post.Date != "" {
+				posts = append(posts, post)
+			}
+		} else if strings.HasSuffix(name, ".md") {
+			// Single-file post
+			post := parseBlogPostFile(path)
+			if post.Date != "" {
+				posts = append(posts, post)
+			}
 		}
-		posts = append(posts, post)
 	}
 
 	// Sort by date descending (newest first)
@@ -282,31 +296,104 @@ func loadBlogPosts() []BlogPost {
 	return posts
 }
 
-func parseBlogPost(path string) BlogPost {
+func parseBlogPostFile(path string) BlogPost {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalf("Error reading blog post %s: %v", path, err)
 	}
 
 	content := string(data)
+	fm, body := extractFrontmatter(content)
 
-	// Parse frontmatter
+	if fm.Draft {
+		return BlogPost{Date: ""}
+	}
+
+	return buildBlogPost(fm, body)
+}
+
+func parseBlogPostFolder(path string) BlogPost {
+	// Look for index.md inside the folder for metadata
+	indexPath := filepath.Join(path, "index.md")
 	var fm blogFrontmatter
-	if strings.HasPrefix(content, "---") {
-		end := strings.Index(content[3:], "---")
-		if end != -1 {
-			fmData := content[3 : end+3]
-			if err := yaml.Unmarshal([]byte(fmData), &fm); err != nil {
-				log.Printf("Warning: failed to parse frontmatter in %s: %v", path, err)
-			}
-			content = strings.TrimSpace(content[end+6:])
-		}
+	var hasIndex bool
+
+	if indexData, err := os.ReadFile(indexPath); err == nil {
+		hasIndex = true
+		fm, _ = extractFrontmatter(string(indexData))
 	}
 
 	if fm.Draft {
 		return BlogPost{Date: ""}
 	}
 
+	// Infer metadata from folder name if not provided by index.md
+	folderName := filepath.Base(path)
+	if !hasIndex || fm.Title == "" {
+		fm.Title = inferTitleFromFolder(folderName)
+	}
+	if !hasIndex || fm.Date == "" {
+		fm.Date = inferDateFromFolder(path, folderName)
+	}
+	if !hasIndex || fm.Slug == "" {
+		fm.Slug = inferSlugFromFolder(folderName)
+	}
+
+	// Read all .md files in the folder except index.md, sort alphabetically
+	entries, err := os.ReadDir(path)
+	if err != nil {
+		log.Fatalf("Error reading blog post folder %s: %v", path, err)
+	}
+
+	var mdFiles []string
+	for _, entry := range entries {
+		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".md") && entry.Name() != "index.md" {
+			mdFiles = append(mdFiles, entry.Name())
+		}
+	}
+	sort.Strings(mdFiles)
+
+	// Concatenate all markdown files
+	var combinedContent strings.Builder
+	for i, mdFile := range mdFiles {
+		if i > 0 {
+			combinedContent.WriteString("\n\n")
+		}
+		fileData, err := os.ReadFile(filepath.Join(path, mdFile))
+		if err != nil {
+			log.Printf("Warning: could not read %s: %v", mdFile, err)
+			continue
+		}
+		// Strip frontmatter from sub-files if present
+		_, body := extractFrontmatter(string(fileData))
+		combinedContent.WriteString(body)
+	}
+
+	body := combinedContent.String()
+	body = stripWikiLinks(body)
+
+	return buildBlogPost(fm, body)
+}
+
+func extractFrontmatter(content string) (blogFrontmatter, string) {
+	var fm blogFrontmatter
+	body := content
+
+	if strings.HasPrefix(content, "---") {
+		end := strings.Index(content[3:], "---")
+		if end != -1 {
+			fmData := content[3 : end+3]
+			if err := yaml.Unmarshal([]byte(fmData), &fm); err != nil {
+				log.Printf("Warning: failed to parse frontmatter: %v", err)
+			}
+			body = strings.TrimSpace(content[end+6:])
+		}
+	}
+
+	return fm, body
+}
+
+func buildBlogPost(fm blogFrontmatter, content string) BlogPost {
 	// Calculate reading time (average 200 words per minute)
 	wordCount := len(strings.Fields(content))
 	readingTime := wordCount / 200
@@ -349,6 +436,57 @@ func parseBlogPost(path string) BlogPost {
 		URL:           fmt.Sprintf("/blog/%s/", fm.Slug),
 		ReadingTime:   readingTime,
 	}
+}
+
+func inferTitleFromFolder(name string) string {
+	// Remove optional date prefix (YYYY-MM-DD- or YYYY-MM-DD_)
+	re := regexp.MustCompile(`^\d{4}-\d{2}-\d{2}[-_]`)
+	name = re.ReplaceAllString(name, "")
+
+	// Replace hyphens and underscores with spaces, title case
+	name = strings.ReplaceAll(name, "-", " ")
+	name = strings.ReplaceAll(name, "_", " ")
+	return strings.Title(name)
+}
+
+func inferSlugFromFolder(name string) string {
+	// Remove optional date prefix
+	re := regexp.MustCompile(`^\d{4}-\d{2}-\d{2}[-_]`)
+	name = re.ReplaceAllString(name, "")
+
+	// Lowercase, replace spaces/underscores with hyphens
+	name = strings.ToLower(name)
+	name = strings.ReplaceAll(name, " ", "-")
+	name = strings.ReplaceAll(name, "_", "-")
+	return name
+}
+
+func inferDateFromFolder(path, name string) string {
+	// Try to extract date from folder name prefix
+	re := regexp.MustCompile(`^(\d{4}-\d{2}-\d{2})[-_]`)
+	matches := re.FindStringSubmatch(name)
+	if len(matches) >= 2 {
+		return matches[1]
+	}
+
+	// Fall back to folder modification time
+	info, err := os.Stat(path)
+	if err != nil {
+		return time.Now().Format("2006-01-02")
+	}
+	return info.ModTime().Format("2006-01-02")
+}
+
+func stripWikiLinks(content string) string {
+	// Handle [[Note Title|Display Text]] -> Display Text
+	rePipe := regexp.MustCompile(`\[\[[^\]]*\|([^\]]*)\]\]`)
+	content = rePipe.ReplaceAllString(content, "$1")
+
+	// Handle [[Note Title]] -> Note Title
+	reSimple := regexp.MustCompile(`\[\[([^\]]*)\]\]`)
+	content = reSimple.ReplaceAllString(content, "$1")
+
+	return content
 }
 
 func formatDate(date string) string {
