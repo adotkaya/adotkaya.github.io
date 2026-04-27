@@ -28,7 +28,10 @@
   pinned: true
 
 - name: "adotkaya.github.io"
-  exclude: true
+  description: ""
+  url: "https://github.com/adotkaya/adotkaya.github.io"
+  tech_stack:
+    - "go"
 
 - name: "adotkaya"
   exclude: true
