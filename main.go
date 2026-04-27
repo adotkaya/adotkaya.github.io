@@ -32,6 +32,7 @@ type PageData struct {
 	Experience     []Experience
 	Projects       []Project
 	PinnedProjects []Project
+	ResumeProjects []Project
 	Books          []Book
 	Tools          []Tool
 	Posts          []BlogPost
@@ -266,6 +267,7 @@ func loadPageData() PageData {
 	sortProjectsByPushedAt(merged)
 	data.Projects = merged
 	data.PinnedProjects = getPinnedOrFallback(merged)
+	data.ResumeProjects = getPinnedOnly(merged)
 
 	return data
 }
@@ -790,6 +792,16 @@ func getPinnedOrFallback(projects []Project) []Project {
 		return pinned[:6]
 	}
 
+	return pinned
+}
+
+func getPinnedOnly(projects []Project) []Project {
+	var pinned []Project
+	for _, p := range projects {
+		if p.Pinned {
+			pinned = append(pinned, p)
+		}
+	}
 	return pinned
 }
 

@@ -101,10 +101,11 @@
                 {{end}}
             </section>
 
+            {{if .ResumeProjects}}
             <section class="resume-section">
                 <h2>Projects</h2>
                 <div class="resume-projects">
-                    {{range .Projects}}
+                    {{range .ResumeProjects}}
                     <div class="resume-project">
                         <h3><a href="{{.URL}}" target="_blank" rel="noopener noreferrer">{{.Name}}</a></h3>
                         <p>{{.Description}}</p>
@@ -117,6 +118,7 @@
                     {{end}}
                 </div>
             </section>
+            {{end}}
         </article>
 
         <footer>
