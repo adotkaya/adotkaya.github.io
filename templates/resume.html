@@ -29,6 +29,12 @@
 <body>
     <nav class="main-nav">
         <a href="/" class="nav-brand">@{{.Config.Username}}</a>
+        <input type="checkbox" id="nav-toggle" hidden>
+        <label for="nav-toggle" class="nav-toggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
         <ul class="nav-links">
             <li><a href="/resume/">Resume</a></li>
             <li><a href="/projects/">Projects</a></li>

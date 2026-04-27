@@ -108,6 +108,7 @@ body {
     border: none;
     cursor: pointer;
     padding: 4px;
+    z-index: 1001;
 }
 
 .nav-toggle span {
@@ -115,7 +116,19 @@ body {
     width: 20px;
     height: 1.5px;
     background-color: var(--text-primary);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#nav-toggle:checked ~ .nav-toggle span:nth-child(1) {
+    transform: translateY(5.5px) rotate(45deg);
+}
+
+#nav-toggle:checked ~ .nav-toggle span:nth-child(2) {
+    opacity: 0;
+}
+
+#nav-toggle:checked ~ .nav-toggle span:nth-child(3) {
+    transform: translateY(-5.5px) rotate(-45deg);
 }
 
 /* Hero */
@@ -1042,7 +1055,7 @@ footer {
         gap: 1rem;
     }
 
-    .nav-links.active {
+    #nav-toggle:checked ~ .nav-links {
         display: flex;
     }
 
