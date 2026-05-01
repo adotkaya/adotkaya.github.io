@@ -340,6 +340,17 @@ section h2 {
     line-height: 1.6;
 }
 
+/* Contributions Graph */
+.contributions {
+    margin-bottom: 3rem;
+}
+
+.contributions svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 /* Projects Full Page */
 .projects-full {
     display: flex;

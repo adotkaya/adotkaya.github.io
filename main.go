@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -24,23 +25,24 @@ import (
 )
 
 type PageData struct {
-	Config         Config
-	Pages          Pages
-	Resume         Resume
-	Now            Now
-	Uses           Uses
-	Experience     []Experience
-	Projects       []Project
-	PinnedProjects []Project
-	ResumeProjects []Project
-	Books          []Book
-	Tools          []Tool
-	Posts          []BlogPost
-	Post           *BlogPost
-	PrevPost       *BlogPost
-	NextPost       *BlogPost
-	Year           int
-	BaseURL        string
+	Config           Config
+	Pages            Pages
+	Resume           Resume
+	Now              Now
+	Uses             Uses
+	Experience       []Experience
+	Projects         []Project
+	PinnedProjects   []Project
+	ResumeProjects   []Project
+	Books            []Book
+	Tools            []Tool
+	Posts            []BlogPost
+	Post             *BlogPost
+	PrevPost         *BlogPost
+	NextPost         *BlogPost
+	Year             int
+	BaseURL          string
+	ContributionsSVG template.HTML
 }
 
 type Config struct {
@@ -268,6 +270,13 @@ func loadPageData() PageData {
 	data.Projects = merged
 	data.PinnedProjects = getPinnedOrFallback(merged)
 	data.ResumeProjects = getPinnedOnly(merged)
+
+	// Fetch GitHub contributions graph SVG
+	contribSVG, err := fetchGitHubContributionsSVG(data.Config.Username)
+	if err != nil {
+		log.Printf("Warning: failed to fetch GitHub contributions: %v", err)
+	}
+	data.ContributionsSVG = contribSVG
 
 	return data
 }
@@ -712,6 +721,40 @@ func fetchGitHubRepos(username string) ([]Project, error) {
 	}
 
 	return projects, nil
+}
+
+func fetchGitHubContributionsSVG(username string) (template.HTML, error) {
+	if username == "" {
+		return "", fmt.Errorf("no username configured")
+	}
+
+	url := fmt.Sprintf("https://github-contributions-api.deno.dev/%s.svg?no-total=true&no-legend=true&font-color=737373", username)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("User-Agent", "adotkaya-static-site-generator")
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("contributions API returned %s", resp.Status)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	// Adapt empty-day color to dark theme so it blends into the background
+	svg := strings.ReplaceAll(string(body), "fill: #eeeeee;", "fill: #141414;")
+
+	return template.HTML(svg), nil
 }
 
 func mergeProjects(yamlProjects, githubProjects []Project) []Project {
