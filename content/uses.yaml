@@ -7,11 +7,11 @@ sections:
       - label: "Editor"
         value: "Zed — fast and minimal"
       - label: "OS"
-        value: "Omarchy, W*nd*ws"
+        value: "W*nd*ws, WSL Ubuntu"
       - label: "Terminal"
         value: "Warp"
       - label: "Shell"
-        value: "pwsh"
+        value: "zsh"
       - label: "Version Control"
         value: "Git, hosted on GitHub"
 
