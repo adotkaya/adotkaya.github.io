@@ -3,6 +3,7 @@
 A minimal, dark-mode personal portfolio and blog built with a custom Go static site generator. Zero client-side JavaScript. Zero frameworks. Just Go, HTML, and CSS.
 
 Live at [adotkaya.github.io](https://adotkaya.github.io)
+If you want to build your own version, you can clone this repository [port-gen](https://github.com/adotkaya/port-gen)
 
 ## What This Is
 
