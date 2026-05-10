@@ -23,10 +23,6 @@ sections:
         value: "professional experience, legacy maintenance"
       - label: "PostgreSQL"
         value: "relational database of choice"
-      - label: "Docker"
-        value: "containerization for local dev and deployment"
-      - label: "Redis"
-        value: "caching and session storage"
 
   - title: "Workflow"
     items:
