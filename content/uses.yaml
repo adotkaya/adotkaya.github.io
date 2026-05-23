@@ -19,6 +19,8 @@ sections:
     items:
       - label: "Go"
         value: "primary language for backend services and systems programming"
+      - label: "Rust"
+        value: "For vibe coding :P"
       - label: "C# / .NET Core"
         value: "professional experience, legacy maintenance"
       - label: "PostgreSQL"
