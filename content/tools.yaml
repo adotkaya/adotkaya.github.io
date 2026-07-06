@@ -28,5 +28,20 @@
 - name: "Python"
   icon: "python"
 
+- name: "Rust"
+  icon: "rust"
+
+- name: "C++"
+  icon: "cplusplus"
+
+- name: "RabbitMQ"
+  icon: "rabbitmq"
+
+- name: "Elasticsearch"
+  icon: "elasticsearch"
+
+- name: "Kafka"
+  icon: "apachekafka"
+
 - name: "SQL"
   icon: "postgresql"

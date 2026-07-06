@@ -1,16 +1,15 @@
-- name: "go-microservice-cargotrack"
-  description: "A modular microservice implementing Domain-Driven Design (DDD) and Clean Architecture principles. Focused on separation of concerns with Entities, Aggregates, and Repositories for a highly maintainable and testable Go codebase."
-  url: "https://github.com/adotkaya/go-microservice-cargotrack"
+- name: "dist_file_storage"
+  description: "A distributed file storage system built from scratch in Go, focusing on node-to-node communication, data replication, and fault tolerance."
+  url: "https://github.com/adotkaya/dist_file_storage"
   tech_stack:
     - "go"
-    - "postgresql"
   pinned: true
 
-- name: "go-hex"
-  description: "A backend service demonstrating Hexagonal Architecture to decouple core business logic from external frameworks and database drivers."
-  url: "https://github.com/adotkaya/go-hex"
+- name: "vaults"
+  description: "A high-security, local-first desktop secret manager written in Rust, ensuring zero-knowledge privacy for personal credentials with end-to-end local encryption."
+  url: "https://github.com/adotkaya/vaults"
   tech_stack:
-    - "go"
+    - "rust"
   pinned: true
 
 - name: "proglog"

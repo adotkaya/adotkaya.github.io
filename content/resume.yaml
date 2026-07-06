@@ -1,17 +1,17 @@
 # yaml-language-server: $schema=none
 # Resume page content
 
-summary: "Backend Software Developer with over 2 years of professional experience in .NET ecosystems. Actively transitioning to Go (Golang) for high-performance applications, with a deep focus on Clean Architecture, concurrency, and distributed systems. Proven track record of delivering scalable REST APIs, optimizing database performance by 40%, and leading testing initiatives for international telecom projects."
+summary: "Systems-oriented Backend Engineer with 4 years of combined experience across corporate environments and startup co-founding, specializing in architecture and systems design. Deeply focused on Go (Golang), concurrency primitives, and distributed systems."
 
 skills:
   - category: "Languages"
-    items: "Go (Golang), C#, .NET Core, SQL, Python"
-  - category: "Go Ecosystem"
-    items: "Clean Architecture, Gin, Fiber, Concurrency (Goroutines/Channels), WebSockets"
+    items: "Go (Golang), Rust, C#, .NET Core, SQL, Python, C++"
+  - category: "Systems & Architecture"
+    items: "Distributed Systems, Clean Architecture, Hexagonal Architecture, Concurrency (Goroutines/Channels), REST API Design, Domain-Driven Design (DDD)"
   - category: "Databases & Tools"
-    items: "PostgreSQL, Redis, Docker, Git, Linux, Jenkins"
-  - category: "Practices"
-    items: "REST API Design, Database Optimization, Agile, Domain-Driven Design (DDD)"
+    items: "PostgreSQL, Redis, RabbitMQ, Elasticsearch, Kafka, Docker, Linux, Git"
+  - category: "Frameworks & Libraries"
+    items: "Gin, Fiber, WebSockets, Qt"
 
 education:
   - institution: "Yasar University"

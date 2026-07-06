@@ -1,15 +1,15 @@
 # yaml-language-server: $schema=none
 # Now page content
 
-last_updated: "April 2026"
+last_updated: "July 2026"
 
 items:
   - title: "Building"
-    content: "Transitioning deeper into Go microservices and distributed systems. Exploring event-driven architectures and improving my understanding of consensus protocols."
+    content: "Designing decentralized networking architectures in Go (dist_file_storage) and zero-knowledge local storage solutions in Rust (vaults). Deepening expertise in distributed systems and systems-level programming."
   - title: "Learning"
-    content: "Deep diving into Kubernetes internals, advanced PostgreSQL query optimization, and systems design for high-throughput services."
+    content: "Advanced Go concurrency patterns (mutexes, channels, sync primitives), distributed consensus protocols, and macroeconomic analysis for portfolio management."
   - title: "Reading"
-    content: "Revisiting Distributed Services with Go by Travis Jeffrey and exploring papers on distributed consensus."
+    content: "Distributed Services with Go by Travis Jeffrey, research papers on distributed consensus, and macroeconomic reports for data-driven investing."
 
 note: "This is a /now page. It reflects what I'm focused on right now, not my entire life story."
 note_link: "https://nownownow.com/about"

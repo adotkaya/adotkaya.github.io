@@ -1,22 +1,28 @@
+- company: "Independent Software Researcher & Technical Writer"
+  role: "Independent Research"
+  period: "01/2026 – Present"
+  points:
+    - "Systems & Architecture R&D: Dedicated 5+ months to independent research, designing decentralized networking architectures in Go (dist_file_storage) and zero-knowledge local storage solutions in Rust (vaults). Authored deep-dive technical articles on personal blog, focusing on distributed systems, advanced Go concurrency patterns (mutexes, channels, sync), and system design."
+    - "Macro-Driven Portfolio Management: Developed data-driven analytical models to analyze global macroeconomic trends, achieving 40% portfolio growth since January 2026 through disciplined risk management."
+
 - company: "Ericsson"
   role: "Software Developer"
   period: "09/2024 – 01/2026"
   points:
-    - "Developed .NET Core backend services serving 100K+ daily requests for a major telecom operator."
-    - "Optimized SQL queries and stored procedures, improving API performance by 40%."
-    - "Led end-to-end testing for 4 concurrent projects with a 100% success rate."
-    - "Built a Power Apps mission tracking solution, replacing Excel for 50+ international operations."
+    - "Telecom Backend Services: Developed high-availability .NET Core backend services for a major telecom operator, handling 100K+ daily requests and managing end-to-end UAT and production deployments. Optimized complex SQL queries and designed stored procedures, achieving a 40% improvement in API and system responsiveness."
+    - "International Process Automation: Engineered a field mission tracking application using Microsoft Power Apps, eliminating manual Excel processes for 50+ concurrent international missions in Africa."
+    - "Testing Leadership: Managed end-to-end software testing processes as an external resource across 4 concurrent critical projects with a 100% success rate."
 
 - company: "Insight Bilişim"
   role: "Co-Founder & Software Developer"
   period: "01/2021 – 04/2023"
   points:
-    - "Co-founded IoT and e-commerce startup; built modular environmental monitoring with Python."
-    - "Developed e-commerce platform handling product catalog, payments, and order management."
+    - "Technical Leadership: Co-founded the startup and led core architectural decisions, delivering full-lifecycle IoT and B2B SaaS solutions."
+    - "Pre-Billing & Inventory Systems: Engineered a robust, transactional pre-billing engine and modular inventory tracking software using Python, ensuring data consistency and secure financial processing."
+    - "E-commerce Infrastructure: Designed an end-to-end e-commerce platform capable of handling complex product catalogs, secure payment gateways, and high-volume order management workflows."
 
 - company: "Semafor Teknoloji"
   role: "Software Developer Intern"
   period: "05/2023 – 08/2023"
   points:
-    - "Developed a healthcare appointment system serving 500+ monthly appointments."
-    - "Implemented JWT role-based auth and reduced data redundancy by 60% via PostgreSQL normalization."
+    - "Full-Stack Development & Security: Built a healthcare appointment system serving 500+ monthly users; implemented role-based JWT authentication and reduced data redundancy by 60% via PostgreSQL normalization."
