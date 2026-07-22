@@ -270,6 +270,9 @@ The book got me to a passing test suite. But the real learning happened when I w
 ## Final Thoughts about the Book
 
 The book is a *great engineer's build log*. And a *bad author's manifesto*. It shows you what to type. But distributed systems are not learned by typing. They are learned by tracing data through every layer and asking "*what if this fails?*" at every step. That is the work the book couldn't do for me.
+
 To my criticism; you can say that "*Well do it yourself! Explore it!*" and you are probably right. My response to that, i think in *BIG 20th century*, this great project is not worth as a book. I would rather listen his thoughts and why he build it like that, what's are important etc.. in a video or podcast... Call me spoiled but i could've just copy it from Github, run it locally and observe it if i wanted to do that. (You can't btw, you should glue everything together to make it work)
+
 I think a book either should teach you a thing, or push you to a critical thinking and researching process. This book does not fulfill either of those criteria. It just jumps jumps jumps.
+
 And with this paragraph i just it realized that it has pushed me into a critical thinking and researching process with its incomplete content because i want to learn how to build distributed systems and make them stay alive. So, either way, thanks to Travis Jeffrey for his book!
