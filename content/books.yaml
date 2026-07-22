@@ -1,10 +1,14 @@
+- title: "Cloud Native Go"
+  author: "Matthew A. Titmus"
+  status: "CurrentlyReading"
+
 - title: "Designing Data-Intensive Applications"
   author: "Martin Kleppmann"
   status: "Currently Reading"
 
 - title: "Distributed Services with Go"
   author: "Travis Jeffrey"
-  status: "Will be finished one day..."
+  status: "Finished"
 
 - title: "Learning Go: An Idiomatic Approach to Real-World Go Programming"
   author: "Jon Bodner"
