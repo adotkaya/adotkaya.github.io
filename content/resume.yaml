@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=none
 # Resume page content
 
-summary: "Systems-oriented Backend Engineer with 4 years of combined experience across corporate environments and startup co-founding, specializing in architecture and systems design. Deeply focused on Go (Golang), concurrency primitives, and distributed systems."
+summary: "Systems-oriented Backend Engineer with 3+ years of combined experience across corporate software development and startup co-founding. Currently pursuing an M.Sc. in Computer Engineering at Yaşar University focusing on Distributed AI Systems. Deeply specialized in Go (Golang), Clean/Hexagonal Architecture, concurrency primitives, and high-throughput systems design."
 
 skills:
   - category: "Languages"
@@ -15,7 +15,12 @@ skills:
 
 education:
   - institution: "Yasar University"
-    degree: "Bachelor of Computer Engineering"
+    degree: "M.Sc. in Computer Engineering"
+    period: "08/2026 – Present"
+    notes:
+      - "Focus Area: Distributed Systems & AI Engineering"
+  - institution: "Yasar University"
+    degree: "B.Sc. in Computer Engineering"
     period: "2019 – 2024"
     notes:
       - "English Proficiency: C1 Certified Level (1-year intensive prep)"

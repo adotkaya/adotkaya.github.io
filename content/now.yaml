@@ -1,15 +1,19 @@
 # yaml-language-server: $schema=none
 # Now page content
 
-last_updated: "July 2026"
+last_updated: "September 2026"
 
 items:
+  - title: "Studying"
+    content: "Started M.Sc. in Computer Engineering at Yaşar University, focusing on Distributed AI Systems — distributed systems + AI engineering."
   - title: "Building"
-    content: "Designing decentralized networking architectures in Go (dist_file_storage) and zero-knowledge local storage solutions in Rust (vaults). Deepening expertise in distributed systems and systems-level programming."
+    content: "Working on distributed systems and AI: extending dist_file_storage (Go) and exploring distributed AI infrastructure. Deepening expertise in Clean/Hexagonal Architecture and high-throughput systems design."
+  - title: "Open To Work"
+    content: "Open to backend / systems engineering roles (Go-focused) alongside graduate studies. Based in Izmir, Türkiye."
   - title: "Learning"
-    content: "Advanced Go concurrency patterns (mutexes, channels, sync primitives), distributed consensus protocols, and macroeconomic analysis for portfolio management."
+    content: "Distributed consensus, high-throughput Go concurrency patterns, and modern AI technologies."
   - title: "Reading"
-    content: "Distributed Services with Go by Travis Jeffrey, research papers on distributed consensus, and macroeconomic reports for data-driven investing."
+    content: "Distributed Services with Go by Travis Jeffrey, Designing Data-Intensive Applications by Martin Kleppmann, and papers on distributed consensus."
 
 note: "This is a /now page. It reflects what I'm focused on right now, not my entire life story."
 note_link: "https://nownownow.com/about"

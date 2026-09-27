@@ -1,9 +1,8 @@
-- company: "Independent Software Researcher & Technical Writer"
-  role: "Independent Research"
-  period: "01/2026 – Present"
+- company: "Career Break"
+  role: "Career Break"
+  period: "02/2026 – 08/2026"
   points:
-    - "Systems & Architecture R&D: Dedicated 5+ months to independent research, designing decentralized networking architectures in Go (dist_file_storage) and zero-knowledge local storage solutions in Rust (vaults). Authored deep-dive technical articles on personal blog, focusing on distributed systems, advanced Go concurrency patterns (mutexes, channels, sync), and system design."
-    - "Macro-Driven Portfolio Management: Developed data-driven analytical models to analyze global macroeconomic trends, achieving 40% portfolio growth since January 2026 through disciplined risk management."
+    - "Following my role at Ericsson, I resigned to intentionally pivot my career toward systems engineering and distributed AI. Over six months, I immersed myself in Go, distributed systems fundamentals, and modern AI technologies through self-directed study and hands-on projects. I documented this journey through technical writing on my personal blog, covering advanced Go concurrency patterns and system design. This period of focused exploration clarified my long-term trajectory, leading me to pursue graduate studies in Distributed AI Systems at Yaşar University."
 
 - company: "Ericsson"
   role: "Software Developer"
@@ -22,7 +21,7 @@
     - "E-commerce Infrastructure: Designed an end-to-end e-commerce platform capable of handling complex product catalogs, secure payment gateways, and high-volume order management workflows."
 
 - company: "Semafor Teknoloji"
-  role: "Software Developer Intern"
+  role: "Software Developer"
   period: "05/2023 – 08/2023"
   points:
     - "Full-Stack Development & Security: Built a healthcare appointment system serving 500+ monthly users; implemented role-based JWT authentication and reduced data redundancy by 60% via PostgreSQL normalization."

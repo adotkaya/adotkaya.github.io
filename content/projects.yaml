@@ -1,15 +1,25 @@
 - name: "dist_file_storage"
-  description: "A distributed file storage system built from scratch in Go, focusing on node-to-node communication, data replication, and fault tolerance."
+  description: "Designed and implemented a distributed file storage system from scratch in Go, focusing on node-to-node communication, data replication, and fault tolerance."
   url: "https://github.com/adotkaya/dist_file_storage"
   tech_stack:
     - "go"
   pinned: true
 
 - name: "vaults"
-  description: "A high-security, local-first desktop secret manager written in Rust, ensuring zero-knowledge privacy for personal credentials with end-to-end local encryption."
+  description: "Developed a high-security, local-first desktop secret manager app written in Rust, ensuring zero-knowledge privacy for personal credentials. Implemented strict end-to-end local encryption, utilizing Rust's memory safety guarantees to prevent memory leaks and protect sensitive data at rest and in motion."
   url: "https://github.com/adotkaya/vaults"
   tech_stack:
     - "rust"
+  pinned: true
+
+- name: "Autonomous-Surround-Detection-Vehicle"
+  description: "Co-designed and developed an autonomous Unmanned Ground Vehicle (UGV) for data collection in high-risk, human-inaccessible disaster zones. Integrated LiDAR for real-time mapping, thermal imaging, and camera feeds with a Qt (C++) control dashboard supporting manual and autonomous driving modes."
+  url: "https://github.com/adotkaya/Autonomous-Surround-Detection-Vehicle"
+  tech_stack:
+    - "python"
+    - "cplusplus"
+    - "qt"
+    - "ros"
   pinned: true
 
 - name: "proglog"
